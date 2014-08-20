@@ -11,7 +11,7 @@ angular.module('myApp.config', [])
   .constant('loginRedirectPath', '/login')
 
   // your Firebase URL goes here
-  .constant('FBURL', 'https://INSTANCE.firebaseio.com')
+  .constant('FBURL', 'https://flickering-fire-3648.firebaseio.com/')
 
   // double check that the app has been configured before running it and blowing up space and time
   .run(['FBURL', '$timeout', function(FBURL, $timeout) {
