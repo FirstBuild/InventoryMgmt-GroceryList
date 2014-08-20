@@ -1,7 +1,7 @@
 # angularfire-seed — the seed for Angular+Firebase apps
 
-This derivative of [angular-seed](https://github.com/angular/angularfire-seed) is an application 
-skeleton for a typical [AngularFire](http://angularfire.com/) web app. You can use it to quickly 
+This derivative of [angular-seed](https://github.com/angular/angular-seed) is an application 
+skeleton for a typical [AngularFire](http://angularfire.com/) web app. You can use it to quickly
 bootstrap your Angular + Firebase projects.
 
 The seed is preconfigured to install the Angular framework, Firebase, AngularFire, and a bundle of
@@ -288,7 +288,7 @@ along with a CI service (in Jenkins) hosted that will run unit and end to end te
 
 ## Contact
 
-For more information on Firebase and AngularFire, 
+For more information on Firebase and AngularFire,
 check out https://firebase.com/docs/web/bindings/angular
 
 For more information on AngularJS please check out http://angularjs.org/
