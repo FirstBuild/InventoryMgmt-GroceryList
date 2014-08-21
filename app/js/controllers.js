@@ -8,16 +8,9 @@ angular.module('myApp.controllers', ['firebase.utils', 'simpleLogin'])
     $scope.user = user;
     $scope.FBURL = FBURL;
   }])
-
-  .controller('ChatCtrl', ['$scope', 'messageList', function($scope, messageList) {
-    $scope.messages = messageList;
-    $scope.addMessage = function(newMessage) {
-      if( newMessage ) {
-        $scope.messages.$add({text: newMessage});
-      }
-    };
+  .controller('ContainerCtrl', ['$scope', 'simpleLogin', '$location', function($scope, simpleLogin, $location) {
+    /* container behaviors/scope settings go here*/
   }])
-
   .controller('LoginCtrl', ['$scope', 'simpleLogin', '$location', function($scope, simpleLogin, $location) {
     $scope.email = null;
     $scope.pass = null;

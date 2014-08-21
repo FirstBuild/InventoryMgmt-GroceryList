@@ -16,6 +16,10 @@ angular.module('myApp.routes', ['ngRoute', 'simpleLogin'])
         }]
       }
     },
+    '/containers': {
+      templateUrl: 'partials/containers.html',
+      controller: 'ContainerCtrl'
+    },
     '/login': {
       templateUrl: 'partials/login.html',
       controller: 'LoginCtrl'
