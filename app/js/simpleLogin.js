@@ -57,7 +57,7 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
             })
             .then(function(user) {
               // store user data in Firebase after creating account
-              return createProfile(user.uid, email, name).then(function() {
+              return createProfile(user.uid, email, email, user.provider, user.id).then(function() {
                 return user;
               })
             });
@@ -100,9 +100,9 @@ angular.module('simpleLogin', ['firebase', 'firebase.utils', 'changeEmail'])
     }])
 
   .factory('createProfile', ['fbutil', '$q', '$timeout', function(fbutil, $q, $timeout) {
-    return function(id, email, name) {
+    return function(id, email, name, provider, provider_id) {
       var ref = fbutil.ref('users', id), def = $q.defer();
-      ref.set({email: email, name: name||firstPartOfEmail(email)}, function(err) {
+      ref.set({email: email, provider: provider, provider_id: provider_id, displayName: name||firstPartOfEmail(email)}, function(err) {
         $timeout(function() {
           if( err ) {
             def.reject(err);
