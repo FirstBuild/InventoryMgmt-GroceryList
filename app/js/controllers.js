@@ -43,15 +43,8 @@ angular.module('myApp.controllers', ['firebase.utils', 'simpleLogin'])
     $scope.createAccount = function() {
       $scope.err = null;
       if( assertValidAccountProps() ) {
-        console.log("here");
         simpleLogin.createAccount($scope.email, $scope.pass)
           .then(function(/* user */) {
-            console.log("create user in db");
-            console.log(user);
-            var ref = new Firebase(FBURL + '/users');
-            var sync = $firebase(ref);
-            sync.$set(user.uid, {displayName: $scope.email, email: $scope.email, provider: user.provider, provider_id: user.id});
-
             $location.path('/account');
           }, function(err) {
             $scope.err = errMessage(err);
