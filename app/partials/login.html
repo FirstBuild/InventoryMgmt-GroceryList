@@ -1,6 +1,8 @@
+<div ng-show="err" class="alert alert-danger" role="alert">{{err}}</div>
+
 <div id='signin-form' class="inner cover">
   <form class="form-signin" role="form">
-    <h2 class="form-signin-heading">Please sign in</h2>
+    <h2 class="form-signin-heading">Please Sign In</h2>
     <input ng-model="email" type="email" class="form-control" placeholder="Email address" required autofocus>
     <input ng-model="pass" type="password" class="form-control" placeholder="Password" required>
     <div ng-cloak ng-show="createMode">
@@ -11,7 +13,5 @@
     <button class="btn btn-lg btn-primary btn-block" ng-click="createMode = true" ng-hide="createMode">Register</button>
     <button class="btn btn-lg btn-primary btn-block" ng-cloak ng-show="createMode" ng-click="createAccount(email, pass, confirm)">Create Account</button>
     <button class="btn btn-lg btn-primary btn-block" ng-cloak ng-show="createMode" ng-click="createMode = false">Cancel</button>
-    <br/>
-    <div ng-show="err" class="alert alert-danger" role="alert">{{err}}</div>
   </form>
 </div>

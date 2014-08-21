@@ -11,7 +11,20 @@ angular.module('myApp.controllers', ['firebase.utils', 'simpleLogin'])
   .controller('ContainerCtrl', ['$scope', 'simpleLogin', '$location', function($scope, simpleLogin, $location) {
     /* container behaviors/scope settings go here*/
   }])
-  .controller('LoginCtrl', ['$scope', 'simpleLogin', '$location', function($scope, simpleLogin, $location) {
+  .controller('ExampleCtrl', ['$scope', 'simpleLogin', 'fbutil', 'user', '$location',
+    function($scope, simpleLogin, fbutil, user, $location) {
+    // example controller to show how to use some aspects of AngularFire
+
+    $scope.dumpData = function(){
+      console.log(user);
+    };
+
+    $scope.redirect = function(){
+      $location.path('/home')
+    };
+
+  }])
+  .controller('LoginCtrl', ['$scope', 'simpleLogin','fbutil', '$location', 'FBURL', function($scope, simpleLogin, fbutil, $location, FBURL) {
     $scope.email = null;
     $scope.pass = null;
     $scope.confirm = null;
@@ -30,8 +43,15 @@ angular.module('myApp.controllers', ['firebase.utils', 'simpleLogin'])
     $scope.createAccount = function() {
       $scope.err = null;
       if( assertValidAccountProps() ) {
+        console.log("here");
         simpleLogin.createAccount($scope.email, $scope.pass)
           .then(function(/* user */) {
+            console.log("create user in db");
+            console.log(user);
+            var ref = new Firebase(FBURL + '/users');
+            var sync = $firebase(ref);
+            sync.$set(user.uid, {displayName: $scope.email, email: $scope.email, provider: user.provider, provider_id: user.id});
+
             $location.path('/account');
           }, function(err) {
             $scope.err = errMessage(err);
@@ -63,6 +83,7 @@ angular.module('myApp.controllers', ['firebase.utils', 'simpleLogin'])
       var profile = fbutil.syncObject(['users', user.uid]);
       profile.$bindTo($scope, 'profile');
 
+      console.log(user);
       // expose logout function to scope
       $scope.logout = function() {
         profile.$destroy();

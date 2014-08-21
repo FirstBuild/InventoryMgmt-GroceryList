@@ -28,7 +28,8 @@
                 <li><a href="#/home">home</a></li>
                 <li ng-hide-auth><a href="#/login">login</a></li>
                 <li ng-show-auth><a href="#/account">account</a></li>
-                <li><button href="#/home">Log Out (todo)</button></li>
+                <li ng-show-auth><button ng-click="logout()" class="btn btn-sm btn-primary btn-block">Log Out</button></li>
+
               </ul>
             </div>
           </div>
@@ -41,11 +42,8 @@
               <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
             </div>
           </div>
-
         </div>
-
       </div>
-
     </div>
 
   <!-- In production use:

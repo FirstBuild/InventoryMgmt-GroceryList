@@ -1,67 +1,86 @@
-
-<h2>Account</h2>
+<div ng-show="err" class="alert alert-danger" role="alert">{{err}}</div>
+<div ng-show="msg" class="alert alert-success" role="alert">{{msg}}</div>
 
 <form>
     <fieldset>
         <legend>Profile</legend>
-
-        <label>
-            <span>Name:</span>
-            <input type="text" name="name" ng-model="profile.name"/>
-        </label>
-
-        <label>
-            <span>Email:</span>
-            <br />{{profile.email}}
-        </label>
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-8">
+            <label>
+                <span>Display Name:</span>
+                <input ng-model="profile.displayName" class="form-control" type="text"/>
+            </label>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-8">
+            <label>
+                <span>Email:</span>
+                <input ng-model="profile.email" class="form-control" type="text" disabled/>
+            </label>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
     </fieldset>
 </form>
 
 <form>
     <fieldset>
         <legend>Change Password</legend>
-
-        <label>
-            <span>Old Password:</span>
-            <input type="password" ng-keypress="clear()" ng-model="oldpass"/>
-        </label>
-
-        <label>
-            <span>New Password:</span>
-            <input type="password" ng-keypress="clear()" ng-model="newpass"/>
-        </label>
-
-        <label>
-            <span>Confirm New Password:</span>
-            <input type="password" ng-keypress="clear()" ng-model="confirm"/>
-        </label>
-
-        <button ng-click="changePassword(oldpass, newpass, confirm)">change password</button>
-
-        <p class="error" ng-show="err">{{err}}</p>
-        <p class="good" ng-show="msg">{{msg}}</p>
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-8">
+            <label>
+                <span>Old Password:</span>
+                <input type="password" class="form-control" ng-keypress="clear()" ng-model="oldpass"/>
+            </label>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-8">
+            <label>
+                <span>New Password:</span>
+                <input type="password" class="form-control" ng-keypress="clear()" ng-model="newpass"/>
+            </label>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-2"></div>
+          <div class="col-md-8">
+            <label>
+                <span>Confirm New Password:</span>
+                <input type="password" class="form-control" ng-keypress="clear()" ng-model="confirm"/>
+            </label>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">&nbsp;</div>
+        </div>
+        <div class="row">
+          <div class="col-md-4"></div>
+          <div class="col-md-4">
+            <button ng-click="changePassword(oldpass, newpass, confirm)" class="btn btn-lg btn-primary btn-block">change password</button>
+          </div>
+          <div class="col-md-4"></div>
+        </div>
     </fieldset>
 </form>
-
 <form>
     <fieldset>
-        <legend>Change Email</legend>
-
-        <label>
-            <span>New Email:</span>
-            <input type="text" ng-keypress="clear()" ng-model="newEmail"/>
-        </label>
-
-        <label>
-            <span>Password:</span>
-            <input type="password" ng-keypress="clear()" ng-model="pass"/>
-        </label>
-
-        <button ng-click="changeEmail(pass, newEmail)">update email</button>
-
-        <p class="error" ng-show="emailerr">{{emailerr}}</p>
-        <p class="good" ng-show="emailmsg">{{emailmsg}}</p>
+        <legend>&nbsp;</legend>
+        <div class="row">
+          <div class="col-md-4"></div>
+          <div class="col-md-4">
+            <button ng-click="logout()" class="btn btn-lg btn-primary btn-block">Log Out</button>
+          </div>
+          <div class="col-md-4"></div>
+        </div>
     </fieldset>
 </form>
-
-<button ng-click="logout()">Log Out</button>
