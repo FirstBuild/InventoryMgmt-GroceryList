@@ -1,6 +1,6 @@
 
 // a simple wrapper on Firebase and AngularFire to simplify deps and keep things DRY
-angular.module('firebase.utils', ['firebase', 'myApp.config'])
+angular.module('firebase.utils', ['firebase', 'fbGroceryList.config'])
    .factory('fbutil', ['$window', 'FBURL', '$firebase', function($window, FBURL, $firebase) {
       "use strict";
 
@@ -85,4 +85,3 @@ angular.module('firebase.utils', ['firebase', 'myApp.config'])
         return $firebase(ref, props);
       }
    }]);
-

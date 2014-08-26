@@ -3,7 +3,7 @@
 
    /* Services */
 
-   angular.module('myApp.services', [])
+   angular.module('fbGroceryList.services', [])
 
       // put your services here!
       // .service('serviceName', ['dependency', function(dependency) {}]);
@@ -13,4 +13,3 @@
      }]);
 
 })();
-

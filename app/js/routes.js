@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module('myApp.routes', ['ngRoute', 'simpleLogin'])
+angular.module('fbGroceryList.routes', ['ngRoute', 'simpleLogin'])
 
   .constant('ROUTES', {
     '/home': {

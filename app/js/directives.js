@@ -3,7 +3,7 @@
 /* Directives */
 
 
-angular.module('myApp.directives', ['simpleLogin'])
+angular.module('fbGroceryList.directives', ['simpleLogin'])
 
   .directive('appVersion', ['version', function(version) {
     return function(scope, elm) {
