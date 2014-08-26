@@ -18,7 +18,8 @@ angular.module('myApp.routes', ['ngRoute', 'simpleLogin'])
     },
     '/containers': {
       templateUrl: 'partials/containers.html',
-      controller: 'ContainerCtrl'
+      controller: 'ContainerCtrl',
+      authRequired: true
     },
     '/example': {
       templateUrl: 'partials/example.html',
@@ -28,6 +29,10 @@ angular.module('myApp.routes', ['ngRoute', 'simpleLogin'])
     '/login': {
       templateUrl: 'partials/login.html',
       controller: 'LoginCtrl'
+    },
+    '/logout': {
+      templateUrl: 'partials/account.html',
+      controller: 'LogoutCtrl'
     },
     '/list': {
       templateUrl: 'partials/list.html',

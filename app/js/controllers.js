@@ -8,9 +8,76 @@ angular.module('myApp.controllers', ['firebase.utils', 'simpleLogin'])
     $scope.user = user;
     $scope.FBURL = FBURL;
   }])
-  .controller('ContainerCtrl', ['$scope', 'simpleLogin', '$location', function($scope, simpleLogin, $location) {
-    /* container behaviors/scope settings go here*/
-  }])
+  .controller('ContainerCtrl', ['$scope', 'simpleLogin', 'fbutil', 'user', '$location', '$firebase',
+    function($scope, simpleLogin, fbutil, user, $location, $firebase) {
+
+      // ******** Add Container - Start *********
+
+      //Add to containers
+      //Add to users
+      //Add to objects?
+
+
+
+      $scope.addContainer = function() {
+          $scope.containers.$add({
+          		owner: user.uid,
+          		parent: $scope.parentName,
+            	name: $scope.containerName
+          });
+          $scope.containerName = '';
+      }
+
+      // ******** Add Container - End *********
+
+      // ******** Add Object - Start *********
+
+      $scope.addObject = function() {
+
+      }
+
+      // ******** Add Object - End *********
+
+
+      // ******** View Container - Start *********
+
+      // create a 3-way binding with the user profile object in Firebase
+      //////var profile = fbutil.syncObject(['users', user.uid]);
+      //var profile = fbutil.syncObject('user');
+      /////profile.$bindTo($scope, 'profile');
+
+      console.log('&&&&&&&&&&&&&&'+user.uid);
+
+      var usersRef = new Firebase("https://flickering-fire-3648.firebaseio.com/users");
+      var containersRef = new Firebase("https://flickering-fire-3648.firebaseio.com/containers");
+      //var ownersRef = containersRef.child("owners").child(user.uid);
+      //linkCommentsRef.on("child_added", function(snap) {
+        //commentsRef.child(snap.name()).once("value", function() {
+          // Render the comment on the link page.
+        //));
+      //});
+
+      var ownersRef = containersRef.child("owners")
+      .startAt(user.uid)
+      .endAt(user.uid)
+      .once('value', function(snap) {
+        console.log('containers of user : ', snap.val())
+      });
+
+      //.startAt('/owners/'+user.uid)
+      //.endAt('/owners/'+user.uid)
+      //.once('value', function(snap) {
+        //console.log('containers of user '+user.uid+ ': ', snap.val())
+      //}
+
+      //;
+      $scope.containers = $firebase(ownersRef).$asArray();
+      console.log($scope.containers);
+
+      // ******** View Container - End *********
+      }
+  ])
+
   .controller('ExampleCtrl', ['$scope', 'simpleLogin', 'fbutil', 'user', '$location',
     function($scope, simpleLogin, fbutil, user, $location) {
     // example controller to show how to use some aspects of AngularFire
@@ -23,6 +90,12 @@ angular.module('myApp.controllers', ['firebase.utils', 'simpleLogin'])
       $location.path('/home')
     };
 
+  }])
+  .controller('LogoutCtrl', ['$scope', 'simpleLogin', 'fbutil', '$location',
+    function($scope, simpleLogin, fbutil, $location) {
+      simpleLogin.logout();
+      console.log('User logged out');
+      $location.path('/login');
   }])
   .controller('LoginCtrl', ['$scope', 'simpleLogin','fbutil', '$location', 'FBURL', function($scope, simpleLogin, fbutil, $location, FBURL) {
     $scope.email = null;
@@ -78,11 +151,14 @@ angular.module('myApp.controllers', ['firebase.utils', 'simpleLogin'])
 
       console.log(user);
       // expose logout function to scope
-      $scope.logout = function() {
+      /*$scope.logout = function() {
+        console.log('%%%%%%%%%%%');
         profile.$destroy();
+        console.log('***********');
         simpleLogin.logout();
+        console.log('$$$$$$$$$$$');
         $location.path('/login');
-      };
+      };*/
 
       $scope.changePassword = function(pass, confirm, newPass) {
         resetMessages();
