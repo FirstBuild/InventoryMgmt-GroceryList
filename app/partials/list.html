@@ -1,1 +1,4 @@
-this is the partial that will load the Grocery List Page
+<div ng-show="err" class="alert alert-danger" role="alert">{{err}}</div>
+
+<input ng-model="item" type="text" class="form-control" placeholder="New Item" required>
+<button class="btn btn-lg btn-primary btn-block" ng-click="addItem(item)">Add Item</button>

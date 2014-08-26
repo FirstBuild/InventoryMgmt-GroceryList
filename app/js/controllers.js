@@ -8,6 +8,32 @@ angular.module('fbGroceryList.controllers', ['firebase.utils', 'simpleLogin'])
     $scope.user = user;
     $scope.FBURL = FBURL;
   }])
+  .controller('ListCtrl', ['$scope', 'simpleLogin', 'fbutil', 'user', '$location', '$firebase',
+    function($scope, simpleLogin, fbutil, user, $location, $firebase) {
+      // for now, hardcode grocery list until we have strategy for storing that
+      $scope.groceryList = "-JUe8qcgJOZsHYZCogge";
+
+      $scope.addItem = function(item) {
+        var objectRef = $firebase(fbutil.ref('objects'));
+        var containerRef = $firebase(fbutil.ref('containers', $scope.groceryList, 'objects' ));
+
+        var groceryItem = {
+          checked: false,
+          container: $scope.groceryList,
+          data: item
+        }
+        // first push new object into object list, and then push into users Grocery List
+        objectRef.$push(groceryItem).then(function(newObject) {
+          var containerIndexValue = {};
+          containerIndexValue[newObject.name()] = true;
+          containerRef.$update(containerIndexValue);
+          $scope.item = "";
+        },function(err) {
+          $scope.err = errMessage(err);
+        });
+
+      }
+  }])
   .controller('ContainerCtrl', ['$scope', 'simpleLogin', 'fbutil', 'user', '$location', '$firebase',
     function($scope, simpleLogin, fbutil, user, $location, $firebase) {
 
