@@ -8,6 +8,7 @@ angular.module('fbGroceryList.controllers', ['firebase.utils', 'simpleLogin'])
     $scope.user = user;
     $scope.FBURL = FBURL;
   }])
+
   .controller('ListCtrl', ['$scope', 'simpleLogin', 'fbutil', 'user', '$location', '$firebase',
     function($scope, simpleLogin, fbutil, user, $location, $firebase) {
       // for now, hardcode grocery list until we have strategy for storing that
@@ -33,74 +34,61 @@ angular.module('fbGroceryList.controllers', ['firebase.utils', 'simpleLogin'])
         });
 
       }
+
   }])
+
   .controller('ContainerCtrl', ['$scope', 'simpleLogin', 'fbutil', 'user', '$location', '$firebase',
     function($scope, simpleLogin, fbutil, user, $location, $firebase) {
 
+      console.log('Logged in user ID: '+user.uid);
+
+      var rootContainerFB = new Firebase("https://flickering-fire-3648.firebaseio.com/users/"+user.uid+"/root_containers");
+      var rootContainer = $firebase(rootContainerFB).$asObject();
+      var rootContainerName = "-JUApWC5RZF-LgQmoUxd";// For test
+      var rootContainerId = rootContainer.$id;
+      console.log('rootContainerId: '+rootContainerId);
+      console.log('rootContainerName: '+rootContainerName);
+      var userGroceryListFB = new Firebase("https://flickering-fire-3648.firebaseio.com/containers/"+rootContainerName+"/children");
+      var userGroceryLists = $firebase(userGroceryListFB).$asArray();
+      console.log("User has "+userGroceryLists.length+" lists.");
+      $scope.userGroceryLists = $firebase(userGroceryListFB).$asArray();
+      $scope.rootContainerName = rootContainerName;
+      $scope.rootContainerId = rootContainerId;
+
+      var gLs = {};
+
+      for(var i=0; i<userGroceryLists.length; i++){
+        //var listRef = $firebase(fbutil.ref('containers',userGroceryLists[i]));
+        gLs[i] = $firebase(fbutil.ref('containers',userGroceryLists[i])).$asObject();
+        console.log("list "+i+" name : "+listRef.name());
+      }
+
+      $scope.userGLs = gLs;
+
       // ******** Add Container - Start *********
+      $scope.addList = function() {
+        var containerRef = $firebase(fbutil.ref('containers'));
+        var glRef = $firebase(fbutil.ref('containers', rootContainerName, 'children' ));
 
-      //Add to containers
-      //Add to users
-      //Add to objects?
+        var ownersObj = {};
+        ownersObj[user.uid] = true;
+        var groceryList = {
+          owners: ownersObj,
+          parent: $scope.parentName || $scope.rootContainerName,
+          name: $scope.listName
+        }
 
-
-
-      $scope.addContainer = function() {
-          $scope.containers.$add({
-          		owner: user.uid,
-          		parent: $scope.parentName,
-            	name: $scope.containerName
-          });
+        containerRef.$push(groceryList).then(function(newObject) {
+          var containerIndexValue = {};
+          containerIndexValue[newObject.name()] = true;
+          glRef.$update(containerIndexValue);
           $scope.containerName = '';
+          console.log("Grocery list created : "+newObject.name());
+        },function(err) {
+          $scope.err = 'Grocery list creation failed.';
+        });
       }
 
-      // ******** Add Container - End *********
-
-      // ******** Add Object - Start *********
-
-      $scope.addObject = function() {
-
-      }
-
-      // ******** Add Object - End *********
-
-
-      // ******** View Container - Start *********
-
-      // create a 3-way binding with the user profile object in Firebase
-      //////var profile = fbutil.syncObject(['users', user.uid]);
-      //var profile = fbutil.syncObject('user');
-      /////profile.$bindTo($scope, 'profile');
-
-      console.log('&&&&&&&&&&&&&&'+user.uid);
-
-      var usersRef = new Firebase("https://flickering-fire-3648.firebaseio.com/users");
-      var containersRef = new Firebase("https://flickering-fire-3648.firebaseio.com/containers");
-      //var ownersRef = containersRef.child("owners").child(user.uid);
-      //linkCommentsRef.on("child_added", function(snap) {
-        //commentsRef.child(snap.name()).once("value", function() {
-          // Render the comment on the link page.
-        //));
-      //});
-
-      var ownersRef = containersRef.child("owners")
-      .startAt(user.uid)
-      .endAt(user.uid)
-      .once('value', function(snap) {
-        console.log('containers of user : ', snap.val())
-      });
-
-      //.startAt('/owners/'+user.uid)
-      //.endAt('/owners/'+user.uid)
-      //.once('value', function(snap) {
-        //console.log('containers of user '+user.uid+ ': ', snap.val())
-      //}
-
-      //;
-      $scope.containers = $firebase(ownersRef).$asArray();
-      console.log($scope.containers);
-
-      // ******** View Container - End *********
       }
   ])
 

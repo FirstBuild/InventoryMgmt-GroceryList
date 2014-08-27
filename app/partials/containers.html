@@ -1,38 +1,35 @@
-<div class="row">
-  <div class="col-md-2"></div>
-  <div class="col-md-8">
-    <label>
-        <span>Add Object</span>
-    </label>
-    <input ng-model="object.name" class="form-control" type="text"/>
-    <input ng-model="object.container" class="form-control" type="text"/>
-    <input ng-model="object.data" class="form-control" type="text"/>
-  </div>
-  <div class="col-md-2"></div>
-  <div class="col-md-8">
-    <label>
-        <span>Add Container</span>
-    </label>
-    <input ng-model="container.name" class="form-control" type="text"/>
-    <input ng-model="container.container" class="form-control" type="text"/>
-    <input ng-model="container.data" class="form-control" type="text"/>
-  </div>
-  <div class="col-md-2"></div>
-  <div class="col-md-8">
-    <label>
-        <span>Select Container</span>
-    </label>
-    <select ng-model='parentName' id='parentName' ng-options='container.name for container in containers'>
-      
-    </select>
-    <ul id='containersList'>
-      <li ng-repeat='container in containers'>
-        <strong>Name : </strong>{{container.name}}   <strong>Owner : </strong>{{container.owner}}
-      </li>
-    </ul>
-    <input ng-model="object.name" class="form-control" type="text"/>
-    <input ng-model="object.container" class="form-control" type="text"/>
-    <input ng-model="object.data" class="form-control" type="text"/>
-  </div>
-  <div class="col-md-2"></div>
+<header>Add Grocery List</header>
+<div>
+  <label for='listName'>Name</label>
+  <input ng-model='listName' class="form-control" type='text' id='listName' placeholder='enter a list name...'><br>
+  <label for='parentName'>Parent</label>
+  <select ng-model='parentName' id='parentName' ng-options='list.name for list in userGroceryLists'>
+  	<option value="">rootContainer</option>
+  </select><br>
+  <!--<label for='ownerName'>Owner</label>
+  <select ng-model='ownerName' id='ownerName' ng-options='user.name for user in users'></select><br>-->
+  <button ng-click="addList()">Add</button>
 </div>
+
+<header>Your Grocery Lists</header>
+<ul id='lists'>
+  <li ng-repeat='list in userGLs'>
+    <strong>Name : </strong>{{list.name}}
+  </li>
+</ul>
+
+
+<!--<div class="row">
+  <div class="col-md-2"></div>
+  <div class="col-md-8">
+    <label>
+        <span>Add Grocery List</span>
+    </label>
+    <input ng-model="listName" id='listName' class="form-control" type="text" placeholder='enter a list name...'/>
+    <select ng-model='parentName' id='parentName' class="form-control" ng-options='list.name for container in containers'>
+      <option value=""></option>
+    </select>
+    <input ng-model="object.data" class="form-control" type="text"/>
+  </div>
+  <div class="col-md-2"></div>
+</div>-->
