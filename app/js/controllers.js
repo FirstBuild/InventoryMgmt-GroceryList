@@ -39,41 +39,50 @@ angular.module('fbGroceryList.controllers', ['firebase.utils', 'simpleLogin'])
 
   .controller('ContainerCtrl', ['$scope', 'simpleLogin', 'fbutil', 'user', '$location', '$firebase',
     function($scope, simpleLogin, fbutil, user, $location, $firebase) {
-
       console.log('Logged in user ID: '+user.uid);
 
-      var rootContainerFB = new Firebase("https://flickering-fire-3648.firebaseio.com/users/"+user.uid+"/root_containers");
-      var rootContainer = $firebase(rootContainerFB).$asObject();
-      var rootContainerName = "-JUApWC5RZF-LgQmoUxd";// For test
-      var rootContainerId = rootContainer.$id;
-      console.log('rootContainerId: '+rootContainerId);
-      console.log('rootContainerName: '+rootContainerName);
-      var userGroceryListFB = new Firebase("https://flickering-fire-3648.firebaseio.com/containers/"+rootContainerName+"/children");
-      var userGroceryLists = $firebase(userGroceryListFB).$asArray();
-      console.log("User has "+userGroceryLists.length+" lists.");
-      $scope.userGroceryLists = $firebase(userGroceryListFB).$asArray();
-      $scope.rootContainerName = rootContainerName;
-      $scope.rootContainerId = rootContainerId;
+      var rootContainer = $firebase(fbutil.ref('users', user.uid, 'rootContainer')).$asObject();
+      $scope.rootContainerId = rootContainer.$id;
+      $scope.rootContainerName = "-JVMgU3mA-KgJ3OORLvF";
 
+      var listCnt = 0;
       var gLs = {};
+      var glistObjs = {};
+      $scope.userGLs = {};
+      $scope.userObjs = {};
 
-      for(var i=0; i<userGroceryLists.length; i++){
-        //var listRef = $firebase(fbutil.ref('containers',userGroceryLists[i]));
-        gLs[i] = $firebase(fbutil.ref('containers',userGroceryLists[i])).$asObject();
-        console.log("list "+i+" name : "+listRef.name());
-      }
+      $scope.userGroceryLists = $firebase(fbutil.ref('containers', $scope.rootContainerName, 'children')).$asArray();
+      $scope.userGroceryLists.$loaded().then(function() {
+        var i=0;
 
-      $scope.userGLs = gLs;
+        angular.forEach($scope.userGroceryLists, function(glist) {
+            $scope.userGLs[i++] = $firebase(fbutil.ref('containers', glist.$id)).$asObject();
+            //To be tested code - Start ; This is to show objects in lists
+
+            $scope.glObjects  = $firebase(fbutil.ref('containers', glist.$id, 'objects')).$asArray();
+
+            var listObjs = {};
+            $scope.glObjects.$loaded().then(function() {
+
+              var j=0;
+              angular.forEach($scope.glObjects, function(lobj) {
+                  console.log('List --> '+glist.$id);
+                  listObjs[j++] = $firebase(fbutil.ref('objects', lobj.$id)).$asObject();
+              });
+              //$scope.userGLs[i].objects.add(userObjs);
+            });
+            $scope.userObjs[glist.$id] = listObjs;
+            //To be tested code - End
+        });
+      });
 
       // ******** Add Container - Start *********
       $scope.addList = function() {
         var containerRef = $firebase(fbutil.ref('containers'));
-        var glRef = $firebase(fbutil.ref('containers', rootContainerName, 'children' ));
+        var glRef = $firebase(fbutil.ref('containers', $scope.rootContainerName, 'children' ));
 
-        var ownersObj = {};
-        ownersObj[user.uid] = true;
         var groceryList = {
-          owners: ownersObj,
+          owner: user.uid,
           parent: $scope.parentName || $scope.rootContainerName,
           name: $scope.listName
         }
@@ -88,8 +97,33 @@ angular.module('fbGroceryList.controllers', ['firebase.utils', 'simpleLogin'])
           $scope.err = 'Grocery list creation failed.';
         });
       }
+      // ******** Add Container - End *********
 
+      // ******** Add Object - Start *********
+      $scope.addItem = function(item, listId) {
+        console.log('1');
+        var objectRef = $firebase(fbutil.ref('objects'));
+        var containerRef = $firebase(fbutil.ref('containers', listId, 'objects' ));
+        console.log('2');
+        var groceryItem = {
+          checked: false,
+          container: listId,
+          data: item
+        }
+        console.log('3');
+        // first push new object into object list, and then push into users Grocery List
+        objectRef.$push(groceryItem).then(function(newObject) {
+          var containerIndexValue = {};
+          containerIndexValue[newObject.name()] = true;
+          containerRef.$update(containerIndexValue);
+          $scope.item = "";
+        },function(err) {
+          $scope.err = 'Grocery list creation failed.';
+        });
+        console.log('1');
       }
+      // ******** Add Object - End *********
+    }
   ])
 
   .controller('ExampleCtrl', ['$scope', 'simpleLogin', 'fbutil', 'user', '$location',
