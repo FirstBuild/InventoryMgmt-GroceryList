@@ -113,6 +113,7 @@ angular.module('fbGroceryList.controllers', ['firebase.utils', 'simpleLogin'])
         console.log('3');
         // first push new object into object list, and then push into users Grocery List
         objectRef.$push(groceryItem).then(function(newObject) {
+          //console.log('3a '+newObject.name())
           var containerIndexValue = {};
           containerIndexValue[newObject.name()] = true;
           containerRef.$update(containerIndexValue);

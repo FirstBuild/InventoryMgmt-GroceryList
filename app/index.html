@@ -15,39 +15,24 @@
 </head>
 <body ng-cloak>
 
-  <div class="site-wrapper">
-
-      <div class="site-wrapper-inner">
-
-        <div id="container" class="cover-container">
-
-          <div class="masthead clearfix">
-            <div class="inner">
-              <h3 class="masthead-brand">FirstBuild</h3>
-              <ul class="nav masthead-nav">
-                <li><a href="#/home">home</a></li>
-                <li ng-show-auth><a href="#/containers">Grocery List</a></li>
-                <li ng-hide-auth><a href="#/login">login</a></li>
-                <li ng-show-auth><a href="#/account">account</a></li>
-                <li ng-show-auth><a href="#/logout">logout</a></li>
-                <!--<li ng-show-auth>
-                  <button ng-click="logout()" class="btn btn-sm btn-primary btn-block">Log Out</button>
-                </li>-->
-              </ul>
-            </div>
-          </div>
-
-          <!-- load the view as defined in routes.js -->
-          <div ng-view></div>
-
-          <div class="mastfoot">
-            <div class="inner">
-              <p>Cover template for <a href="http://getbootstrap.com">Bootstrap</a>, by <a href="https://twitter.com/mdo">@mdo</a>.</p>
-            </div>
-          </div>
-        </div>
-      </div>
+  <div class="masthead clearfix">
+    <div class="inner">
+      <h3 class="masthead-brand">FirstBuild</h3>
+      <ul class="nav masthead-nav">
+        <li><a href="#/home">home</a></li>
+        <li ng-show-auth><a href="#/containers">Grocery List</a></li>
+        <li ng-hide-auth><a href="#/login">login</a></li>
+        <li ng-show-auth><a href="#/account">account</a></li>
+        <li ng-show-auth><a href="#/logout">logout</a></li>
+        <!--<li ng-show-auth>
+          <button ng-click="logout()" class="btn btn-sm btn-primary btn-block">Log Out</button>
+        </li>-->
+      </ul>
     </div>
+  </div>
+
+
+    <div ng-view></div>
 
   <!-- In production use:
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.x/angular.min.js"></script>
